@@ -1,7 +1,6 @@
-def MinePage(urlString = ''):
+def MinePage(urlString = 'http://www.nature.com/srep/2013/130425/srep01684/full/srep01684.html#f2'):
     if urlString == '':
         print('missing url! turn back!')
-        return ''
     else:
         import urllib.request
         import urllib.parse
@@ -18,7 +17,10 @@ def MinePage(urlString = ''):
         respData = resp.read()
 
         paragraphs = re.findall(r'<p>(.*?)<p>', str(respData))
-        return paragraphs
+        print(paragraphs)
+
+
+    print('this is a test a test a test')
 
     '''
     This will mine the html from a given page
