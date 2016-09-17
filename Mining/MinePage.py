@@ -1,26 +1,43 @@
-def MinePage(urlString = 'http://www.nature.com/srep/2013/130425/srep01684/full/srep01684.html#f2'):
+def MinePage(urlString = 'https://web.archive.org/web/20140213040302/http://www.reddit.com/'):
+
     if urlString == '':
         print('missing url! turn back!')
     else:
-        import urllib.request
-        import urllib.parse
+        import requests
         import re
-
+        import nltk
+        from nltk import word_tokenize
+        from bs4 import BeautifulSoup
         url = urlString
         values = {'s': 'basics',
                   'submit': 'search'}
 
-        data = urllib.parse.urlencode(values)
-        data = data.encode('utf-8')
-        req = urllib.request.Request(url, data)
-        resp = urllib.request.urlopen(req)
-        respData = resp.read()
+        response = requests.get(urlString)
+        data = response.text
 
-        paragraphs = re.findall(r'<p>(.*?)<p>', str(respData))
-        print(paragraphs)
+        ## Beatiful Soup Method
+        soup = BeautifulSoup(data,'html.parser')
+        texts = soup.findAll(text=True)
+
+        def visible(element):
+            if element.parent.name in ['style', 'script', '[document]', 'head', 'title']:
+                return False
+            elif re.match('<!--.*-->', str(element)):
+                return False
+            return True
+
+        visible_texts = ''.join(list(filter(visible, texts)))
+        tokens = word_tokenize(visible_texts)
+        text = nltk.Text(tokens)
+
+        #print(tokens)
+        print(text[:15])
 
 
-    print('this is a test a test a test')
+
+
+        #return data
+
 
     '''
     This will mine the html from a given page

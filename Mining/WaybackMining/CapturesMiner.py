@@ -1,5 +1,8 @@
 def MineCaptures():
-    import requests,json
+    import requests
+    import json
+    import h5py
+    import numpy as np
 
     website = 'http://www.huffingtonpost.com/'
     numericStartDate = '20150101010101'
@@ -10,9 +13,17 @@ def MineCaptures():
                 str(numericStartDate)+'&to='+str(numericEndDate)+'&collapse=timestamp:8&limit=' + str(limitPerRequest)
     response = requests.get(urlString)
     data = response.json()
-    for id in data:
-        if(id != 'timestamp'):
-            print(id)
+    x = []
+
+    for id in range(1,len(data)):
+        if(data[id] != 'timestamp'):
+            strdat =str(data[id])
+            x.append(int(strdat[2:-2]))
+
+    f = h5py.File("../TAdata/theTestFile.hdf5","w")
+
+    dset = f.create_dataset("mydset",data=x)
+
 
 
 
