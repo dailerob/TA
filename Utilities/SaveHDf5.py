@@ -71,6 +71,6 @@ def checkPath(path):
         if exception.errno != errno.EEXIST:
             raise
 def combineSets(set1, set2):
-    return np.array(list(set(set1)| set(set2)))
+    return np.array(list(set(set1)|set(set2)))
 
 
