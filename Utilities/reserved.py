@@ -1,5 +1,5 @@
 def replaceReservedCharacters(unedited):
-    if unedited.index('https:') != -1 or unedited.index('http:') !=1:
+    if 'https:' in unedited or 'http:' in unedited:
         unedited = unedited[unedited.index(':')+3:len(unedited)]
     unedited = unedited.replace('<', ' LN')
     unedited = unedited.replace('>', ' GN')

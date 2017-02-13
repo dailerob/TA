@@ -7,6 +7,8 @@ import numpy as np
 #group <- the group to save the dataset in
 def saveAt(path, dataSet = None, dataLabel = None, group = None):
 
+    if(dataSet is not None):
+        dataSet = np.array(dataSet)
     checkPath(path)
 
     if dataSet is None and dataLabel is None and group is None: #case with just filename
