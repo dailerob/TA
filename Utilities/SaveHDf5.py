@@ -9,6 +9,7 @@ def saveAt(path, dataSet = None, dataLabel = None, group = None):
 
     if(dataSet is not None):
         dataSet = np.array(dataSet)
+
     checkPath(path)
 
     if dataSet is None and dataLabel is None and group is None: #case with just filename
@@ -22,6 +23,7 @@ def saveAt(path, dataSet = None, dataLabel = None, group = None):
         with h5py.File(path + '.h5', 'a') as hf:
             if dataLabel in list(hf.keys()):
                 newData = combineSets(dataSet, hf.get(dataLabel))
+                hf.__delitem__(dataLabel) #for data of a different shape, old dataset must be deleted
                 hf.create_dataset(dataLabel, data=newData)
             else:
                 hf.create_dataset(dataLabel, data=dataSet)
@@ -32,6 +34,7 @@ def saveAt(path, dataSet = None, dataLabel = None, group = None):
             g1 = hf.get(group)
             if dataLabel in g1.keys():
                 newData = combineSets(dataSet, g1.get(dataLabel))
+                hf.__delitem__(dataLabel) #for data of a different shape, old dataset must be deleted
                 g1.create_dataset(dataLabel, data=newData)
             else:
                 g1.create_dataset(dataLabel, data = dataSet)
@@ -73,6 +76,8 @@ def checkPath(path):
         if exception.errno != errno.EEXIST:
             raise
 def combineSets(set1, set2):
-    return np.array(list(set(set1)|set(set2)))
+    final = np.array(list(set(set1)|set(set2)))
+    print(final)
+    return final
 
 
